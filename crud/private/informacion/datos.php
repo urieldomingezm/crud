@@ -157,12 +157,11 @@ class UsuarioManager
         ];
     }
 
-    // Eliminar usuario
+  
     public static function eliminar($id)
     {
         self::init();
 
-        // Buscar y eliminar usuario
         foreach (self::$usuarios as $key => $usuario) {
             if ($usuario['id'] == $id) {
                 unset(self::$usuarios[$key]);
@@ -182,7 +181,6 @@ class UsuarioManager
     }
 }
 
-// Solo ejecutar la lógica de manejo de peticiones si se accede directamente
 if (basename($_SERVER['PHP_SELF']) === 'datos.php') {
     header('Content-Type: application/json');
 
@@ -192,7 +190,6 @@ if (basename($_SERVER['PHP_SELF']) === 'datos.php') {
         switch ($method) {
             case 'GET':
                 if (isset($_GET['id'])) {
-                    // Obtener usuario específico
                     $usuario = UsuarioManager::obtenerPorId($_GET['id']);
                     if ($usuario) {
                         echo json_encode([
@@ -206,7 +203,6 @@ if (basename($_SERVER['PHP_SELF']) === 'datos.php') {
                         ]);
                     }
                 } else {
-                    // Obtener todos los usuarios para DataTable
                     $usuarios = UsuarioManager::obtenerTodos();
                     echo json_encode([
                         'data' => $usuarios
