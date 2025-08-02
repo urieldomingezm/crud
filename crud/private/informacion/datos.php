@@ -190,7 +190,6 @@ class UsuarioManager
             ];
         }
 
-
         foreach ($_SESSION['usuarios'] as $usuario) {
             if ($usuario['email'] === $datos['email'] && $usuario['id'] != $id) {
                 return [
@@ -212,7 +211,6 @@ class UsuarioManager
         ];
     }
 
-  
     public static function eliminar($id)
     {
         self::init();

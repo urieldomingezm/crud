@@ -1,20 +1,16 @@
-# Configuración para el CRUD DataTable
 RewriteEngine On
 
-# Permitir acceso a archivos PHP en private
 <Files "private/*.php">
     Order allow,deny
     Allow from all
 </Files>
 
-# Configuración de errores
+
 ErrorDocument 403 /index.php
 ErrorDocument 404 /index.php
 
-# Configuración de tipos MIME
 AddType application/json .json
 
-# Configuración de cache para archivos estáticos
 <IfModule mod_expires.c>
     ExpiresActive On
     ExpiresByType text/css "access plus 1 month"
@@ -24,7 +20,6 @@ AddType application/json .json
     ExpiresByType image/jpeg "access plus 1 month"
 </IfModule>
 
-# Configuración de compresión
 <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE text/plain
     AddOutputFilterByType DEFLATE text/html
