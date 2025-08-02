@@ -3,17 +3,26 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once '../../config.php';
-require_once INFORMACION_PATH . 'datos.php';
-
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $resultado = UsuarioManager::agregar($_POST);
-    echo json_encode($resultado);
+    try {
+        unset($_SESSION['usuarios']);
+        unset($_SESSION['nextId']);
+        
+        echo json_encode([
+            'success' => true,
+            'message' => 'Datos reiniciados correctamente'
+        ]);
+    } catch (Exception $e) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Error al reiniciar datos: ' . $e->getMessage()
+        ]);
+    }
 } else {
     echo json_encode([
         'success' => false,

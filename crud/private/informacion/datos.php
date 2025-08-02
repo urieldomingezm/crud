@@ -1,70 +1,124 @@
 <?php
 require_once '../../config.php';
 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 class UsuarioManager
 {
-    private static $usuarios = [];
-    private static $nextId = 1;
+    private static $initialized = false;
 
     public static function init()
     {
-        if (empty(self::$usuarios)) {
-            self::$usuarios = [
-                [
-                    'id' => 1,
-                    'nombre' => 'Juan Pérez',
-                    'email' => 'juan@example.com',
-                    'telefono' => '+1234567890',
-                    'estado' => 1,
-                    'fecha_registro' => '2024-01-15 10:30:00'
-                ],
-                [
-                    'id' => 2,
-                    'nombre' => 'María García',
-                    'email' => 'maria@example.com',
-                    'telefono' => '+1234567891',
-                    'estado' => 1,
-                    'fecha_registro' => '2024-01-16 14:20:00'
-                ],
-                [
-                    'id' => 3,
-                    'nombre' => 'Carlos López',
-                    'email' => 'carlos@example.com',
-                    'telefono' => '+1234567892',
-                    'estado' => 0,
-                    'fecha_registro' => '2024-01-17 09:15:00'
-                ],
-                [
-                    'id' => 4,
-                    'nombre' => 'Ana Martínez',
-                    'email' => 'ana@example.com',
-                    'telefono' => '+1234567893',
-                    'estado' => 1,
-                    'fecha_registro' => date('Y-m-d H:i:s') // Usuario de hoy
-                ],
-                [
-                    'id' => 5,
-                    'nombre' => 'Pedro Rodríguez',
-                    'email' => 'pedro@example.com',
-                    'telefono' => '+1234567894',
-                    'estado' => 1,
-                    'fecha_registro' => '2024-01-18 16:45:00'
-                ]
-            ];
-            self::$nextId = 6;
+        if (!self::$initialized) {
+            if (!isset($_SESSION['usuarios'])) {
+                $_SESSION['usuarios'] = [
+                    [
+                        'id' => 1,
+                        'nombre' => 'Juan Carlos Pérez Mendoza',
+                        'email' => 'juan.perez@corporativo.com',
+                        'telefono' => '+52 55 1234-5678',
+                        'estado' => 1,
+                        'fecha_registro' => '2024-01-15 10:30:00'
+                    ],
+                    [
+                        'id' => 2,
+                        'nombre' => 'María Elena García Rodríguez',
+                        'email' => 'maria.garcia@empresa.mx',
+                        'telefono' => '+52 33 9876-5432',
+                        'estado' => 1,
+                        'fecha_registro' => '2024-01-16 14:20:00'
+                    ],
+                    [
+                        'id' => 3,
+                        'nombre' => 'Carlos Alberto López Hernández',
+                        'email' => 'carlos.lopez@tecnologia.com',
+                        'telefono' => '+52 81 5555-1234',
+                        'estado' => 0,
+                        'fecha_registro' => '2024-01-17 09:15:00'
+                    ],
+                    [
+                        'id' => 4,
+                        'nombre' => 'Ana Sofía Martínez Jiménez',
+                        'email' => 'ana.martinez@innovacion.mx',
+                        'telefono' => '+52 55 7777-8888',
+                        'estado' => 1,
+                        'fecha_registro' => date('Y-m-d H:i:s')
+                    ],
+                    [
+                        'id' => 5,
+                        'nombre' => 'Pedro Antonio Rodríguez Silva',
+                        'email' => 'pedro.rodriguez@desarrollo.com',
+                        'telefono' => '+52 222 444-6666',
+                        'estado' => 1,
+                        'fecha_registro' => '2024-01-18 16:45:00'
+                    ],
+                    [
+                        'id' => 6,
+                        'nombre' => 'Laura Beatriz Fernández Castro',
+                        'email' => 'laura.fernandez@marketing.mx',
+                        'telefono' => '+52 55 3333-4444',
+                        'estado' => 1,
+                        'fecha_registro' => '2024-01-19 11:30:00'
+                    ],
+                    [
+                        'id' => 7,
+                        'nombre' => 'Roberto Miguel Sánchez Torres',
+                        'email' => 'roberto.sanchez@ventas.com',
+                        'telefono' => '+52 33 2222-1111',
+                        'estado' => 0,
+                        'fecha_registro' => '2024-01-20 08:45:00'
+                    ],
+                    [
+                        'id' => 8,
+                        'nombre' => 'Carmen Lucía Morales Vega',
+                        'email' => 'carmen.morales@recursos.mx',
+                        'telefono' => '+52 81 9999-0000',
+                        'estado' => 1,
+                        'fecha_registro' => '2024-01-21 15:20:00'
+                    ],
+                    [
+                        'id' => 9,
+                        'nombre' => 'Diego Alejandro Ruiz Mendez',
+                        'email' => 'diego.ruiz@operaciones.com',
+                        'telefono' => '+52 55 6666-7777',
+                        'estado' => 1,
+                        'fecha_registro' => '2024-01-22 13:10:00'
+                    ],
+                    [
+                        'id' => 10,
+                        'nombre' => 'Valeria Isabel Herrera Campos',
+                        'email' => 'valeria.herrera@finanzas.mx',
+                        'telefono' => '+52 222 8888-9999',
+                        'estado' => 0,
+                        'fecha_registro' => '2024-01-23 10:05:00'
+                    ],
+                    [
+                        'id' => 11,
+                        'nombre' => 'Andrés Fernando Vargas Delgado',
+                        'email' => 'andres.vargas@logistica.com',
+                        'telefono' => '+52 33 1111-2222',
+                        'estado' => 1,
+                        'fecha_registro' => '2024-01-24 17:30:00'
+                    ]
+                ];
+                $_SESSION['nextId'] = 12;
+            }
+            self::$initialized = true;
         }
     }
 
     public static function obtenerTodos()
     {
         self::init();
-        return self::$usuarios;
+        return $_SESSION['usuarios'];
     }
 
     public static function obtenerPorId($id)
     {
         self::init();
-        foreach (self::$usuarios as $usuario) {
+        foreach ($_SESSION['usuarios'] as $usuario) {
             if ($usuario['id'] == $id) {
                 return $usuario;
             }
@@ -83,7 +137,7 @@ class UsuarioManager
             ];
         }
 
-        foreach (self::$usuarios as $usuario) {
+        foreach ($_SESSION['usuarios'] as $usuario) {
             if ($usuario['email'] === $datos['email']) {
                 return [
                     'success' => false,
@@ -93,7 +147,7 @@ class UsuarioManager
         }
 
         $nuevoUsuario = [
-            'id' => self::$nextId++,
+            'id' => $_SESSION['nextId']++,
             'nombre' => trim($datos['nombre']),
             'email' => trim($datos['email']),
             'telefono' => trim($datos['telefono'] ?? ''),
@@ -101,7 +155,7 @@ class UsuarioManager
             'fecha_registro' => date('Y-m-d H:i:s')
         ];
 
-        self::$usuarios[] = $nuevoUsuario;
+        $_SESSION['usuarios'][] = $nuevoUsuario;
 
         return [
             'success' => true,
@@ -122,7 +176,7 @@ class UsuarioManager
         }
 
         $indice = -1;
-        foreach (self::$usuarios as $key => $usuario) {
+        foreach ($_SESSION['usuarios'] as $key => $usuario) {
             if ($usuario['id'] == $id) {
                 $indice = $key;
                 break;
@@ -136,7 +190,8 @@ class UsuarioManager
             ];
         }
 
-        foreach (self::$usuarios as $usuario) {
+
+        foreach ($_SESSION['usuarios'] as $usuario) {
             if ($usuario['email'] === $datos['email'] && $usuario['id'] != $id) {
                 return [
                     'success' => false,
@@ -145,15 +200,15 @@ class UsuarioManager
             }
         }
 
-        self::$usuarios[$indice]['nombre'] = trim($datos['nombre']);
-        self::$usuarios[$indice]['email'] = trim($datos['email']);
-        self::$usuarios[$indice]['telefono'] = trim($datos['telefono'] ?? '');
-        self::$usuarios[$indice]['estado'] = (int)($datos['estado'] ?? 1);
+        $_SESSION['usuarios'][$indice]['nombre'] = trim($datos['nombre']);
+        $_SESSION['usuarios'][$indice]['email'] = trim($datos['email']);
+        $_SESSION['usuarios'][$indice]['telefono'] = trim($datos['telefono'] ?? '');
+        $_SESSION['usuarios'][$indice]['estado'] = (int)($datos['estado'] ?? 1);
 
         return [
             'success' => true,
             'message' => 'Usuario actualizado correctamente',
-            'data' => self::$usuarios[$indice]
+            'data' => $_SESSION['usuarios'][$indice]
         ];
     }
 
@@ -162,10 +217,10 @@ class UsuarioManager
     {
         self::init();
 
-        foreach (self::$usuarios as $key => $usuario) {
+        foreach ($_SESSION['usuarios'] as $key => $usuario) {
             if ($usuario['id'] == $id) {
-                unset(self::$usuarios[$key]);
-                self::$usuarios = array_values(self::$usuarios); // Reindexar array
+                unset($_SESSION['usuarios'][$key]);
+                $_SESSION['usuarios'] = array_values($_SESSION['usuarios']);
 
                 return [
                     'success' => true,
@@ -181,8 +236,12 @@ class UsuarioManager
     }
 }
 
+
 if (basename($_SERVER['PHP_SELF']) === 'datos.php') {
     header('Content-Type: application/json');
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type');
 
     $method = $_SERVER['REQUEST_METHOD'];
 
@@ -205,9 +264,14 @@ if (basename($_SERVER['PHP_SELF']) === 'datos.php') {
                 } else {
                     $usuarios = UsuarioManager::obtenerTodos();
                     echo json_encode([
+                        'success' => true,
                         'data' => $usuarios
                     ]);
                 }
+                break;
+
+            case 'OPTIONS':
+                http_response_code(200);
                 break;
 
             default:
@@ -223,4 +287,5 @@ if (basename($_SERVER['PHP_SELF']) === 'datos.php') {
             'message' => 'Error interno: ' . $e->getMessage()
         ]);
     }
+    exit;
 }

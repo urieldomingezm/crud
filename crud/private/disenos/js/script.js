@@ -6,17 +6,20 @@ let table;
                 "processing": true,
                 "serverSide": false,
                 "ajax": {
-                    "url": "<?php echo INFORMACION_PATH; ?>datos.php",
+                    "url": ROUTES.datos,
                     "type": "GET"
                 },
                 "dom": 'Bfrtip',
+                "fixedHeader": true,
+                "scrollY": "60vh",
+                "scrollCollapse": true,
                 "buttons": [{
                         extend: 'excel',
                         text: '<i class="bi bi-file-earmark-excel mr-2"></i>Excel',
                         className: 'buttons-excel',
                         title: 'Usuarios - ' + new Date().toLocaleDateString('es-ES'),
                         exportOptions: {
-                            columns: [0, 2, 3, 4, 5, 6]
+                            columns: [0, 1, 2, 3, 4, 5]
                         }
                     },
                     {
@@ -27,10 +30,10 @@ let table;
                         orientation: 'landscape',
                         pageSize: 'A4',
                         exportOptions: {
-                            columns: [0, 2, 3, 4, 5, 6]
+                            columns: [0, 1, 2, 3, 4, 5]
                         },
                         customize: function(doc) {
-                            doc.content[1].table.widths = ['10%', '25%', '25%', '15%', '10%', '15%'];
+                            doc.content[1].table.widths = ['8%', '30%', '25%', '15%', '10%', '12%'];
                             doc.styles.tableHeader.fontSize = 10;
                             doc.defaultStyle.fontSize = 8;
                         }
@@ -41,56 +44,73 @@ let table;
                         className: 'buttons-print',
                         title: 'Gestión de Usuarios',
                         exportOptions: {
-                            columns: [0, 2, 3, 4, 5, 6]
+                            columns: [0, 1, 2, 3, 4, 5]
                         }
                     }
                 ],
                 "columns": [{
-                        "data": "id"
-                    },
-                    {
-                        "data": "avatar",
+                        "data": "id",
                         "render": function(data, type, row) {
-                            return `<div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                                        <span class="text-white font-semibold text-sm">${row.nombre.charAt(0).toUpperCase()}</span>
-                                    </div>`;
+                            return `<span class="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-sm font-bold rounded-full shadow-sm">${data}</span>`;
                         }
                     },
                     {
-                        "data": "nombre"
+                        "data": "nombre",
+                        "render": function(data, type, row) {
+                            return `<div class="text-sm font-semibold text-gray-900">${data}</div>`;
+                        }
                     },
                     {
-                        "data": "email"
+                        "data": "email",
+                        "render": function(data, type, row) {
+                            return `<span class="text-sm text-gray-900 hover:text-blue-600 cursor-pointer">${data}</span>`;
+                        }
                     },
                     {
-                        "data": "telefono"
+                        "data": "telefono",
+                        "render": function(data, type, row) {
+                            return `<span class="text-sm text-gray-900">${data}</span>`;
+                        }
                     },
                     {
                         "data": "estado",
                         "render": function(data, type, row) {
                             if (data == 1) {
-                                return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"><i class="bi bi-check-circle mr-1"></i>Activo</span>';
+                                return '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-green-100 to-green-200 text-green-800 border border-green-300 shadow-sm">Activo</span>';
                             } else {
-                                return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800"><i class="bi bi-x-circle mr-1"></i>Inactivo</span>';
+                                return '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-red-100 to-red-200 text-red-800 border border-red-300 shadow-sm">Inactivo</span>';
                             }
                         }
                     },
                     {
                         "data": "fecha_registro",
                         "render": function(data, type, row) {
-                            return new Date(data).toLocaleDateString('es-ES');
+                            const fecha = new Date(data);
+                            const fechaFormateada = fecha.toLocaleDateString('es-ES', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric'
+                            });
+                            const horaFormateada = fecha.toLocaleTimeString('es-ES', {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            });
+                            return `<div class="text-sm">
+                                        <div class="text-gray-900 font-medium">${fechaFormateada}</div>
+                                        <div class="text-gray-500 text-xs">${horaFormateada}</div>
+                                    </div>`;
                         }
                     },
                     {
                         "data": null,
                         "render": function(data, type, row) {
                             return `
-                                <div class="flex items-center justify-center space-x-2">
-                                    <button onclick="editUser(${row.id})" class="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-600 bg-blue-100 hover:bg-blue-200 rounded-md transition-colors duration-200" title="Editar">
-                                        <i class="bi bi-pencil"></i>
+                                <div class="flex items-center justify-center space-x-3">
+                                    <button onclick="editUser(${row.id})" class="group inline-flex items-center justify-center w-9 h-9 text-blue-700 bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-lg transition-all duration-200 border border-blue-200 hover:border-blue-300 shadow-sm hover:shadow-md" title="Editar usuario">
+                                        <i class="bi bi-pencil-square text-sm group-hover:scale-110 transition-transform"></i>
                                     </button>
-                                    <button onclick="deleteUser(${row.id}, '${row.nombre}', '${row.email}')" class="inline-flex items-center px-2 py-1 text-xs font-medium text-red-600 bg-red-100 hover:bg-red-200 rounded-md transition-colors duration-200" title="Eliminar">
-                                        <i class="bi bi-trash"></i>
+                                    <button onclick="deleteUser(${row.id}, '${row.nombre}', '${row.email}')" class="group inline-flex items-center justify-center w-9 h-9 text-red-700 bg-gradient-to-r from-red-50 to-red-100 hover:from-red-100 hover:to-red-200 rounded-lg transition-all duration-200 border border-red-200 hover:border-red-300 shadow-sm hover:shadow-md" title="Eliminar usuario">
+                                        <i class="bi bi-trash3 text-sm group-hover:scale-110 transition-transform"></i>
                                     </button>
                                 </div>
                             `;
@@ -103,8 +123,8 @@ let table;
                 "responsive": true,
                 "pageLength": 10,
                 "lengthMenu": [
-                    [10, 25, 50, -1],
-                    [10, 25, 50, "Todos"]
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "Todos"]
                 ],
                 "order": [
                     [0, "desc"]
@@ -119,12 +139,11 @@ let table;
 
 
         function setupForms() {
-
             $('#formRegistrar').on('submit', function(e) {
                 e.preventDefault();
 
                 $.ajax({
-                    url: '<?php echo ACCIONES_PATH; ?>agregar.php',
+                    url: ROUTES.agregar,
                     type: 'POST',
                     data: $(this).serialize(),
                     dataType: 'json',
@@ -162,7 +181,7 @@ let table;
                 e.preventDefault();
 
                 $.ajax({
-                    url: '<?php echo ACCIONES_PATH; ?>modificar.php',
+                    url: ROUTES.modificar,
                     type: 'POST',
                     data: $(this).serialize(),
                     dataType: 'json',
@@ -205,9 +224,8 @@ let table;
         }
 
         function editUser(id) {
-
             $.ajax({
-                url: '<?php echo INFORMACION_PATH; ?>datos.php',
+                url: ROUTES.datos,
                 type: 'GET',
                 data: {
                     id: id
@@ -237,7 +255,7 @@ let table;
         function confirmarEliminar() {
             if (userIdToDelete) {
                 $.ajax({
-                    url: '<?php echo ACCIONES_PATH; ?>eliminar.php',
+                    url: ROUTES.eliminar,
                     type: 'POST',
                     data: {
                         id: userIdToDelete

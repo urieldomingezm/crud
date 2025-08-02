@@ -1,4 +1,3 @@
-<!-- Modal Eliminar Usuario -->
 <div id="modalEliminar" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
     <div class="flex items-center justify-center min-h-screen px-4">
         <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
