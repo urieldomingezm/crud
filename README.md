@@ -179,26 +179,6 @@ El sistema incluye 11 usuarios de ejemplo con información realista:
 - Estados mixtos (activos/inactivos)
 - Fechas de registro variadas
 
-## Consideraciones de Desarrollo
-
-### Ventajas del Sistema
-- **Sin base de datos**: Ideal para demos y prototipos
-- **Fácil instalación**: No requiere configuración de BD
-- **Interfaz moderna**: UX/UI profesional
-- **Código limpio**: Estructura organizada y documentada
-- **Responsivo**: Funciona en dispositivos móviles
-
-### Limitaciones Actuales
-- **Persistencia temporal**: Datos se pierden al cerrar sesión
-- **Usuario único**: No maneja múltiples usuarios simultáneos
-- **Escalabilidad**: Limitado para grandes volúmenes de datos
-
-### Migración a Base de Datos
-El archivo `sql_referencias.php` contiene todas las consultas SQL necesarias para migrar a una base de datos MySQL/MariaDB, incluyendo:
-- Estructura de tabla `usuarios`
-- Índices optimizados
-- Consultas CRUD completas
-
 ## Autor
 
 **Uriel Medina** - Desarrollador Full Stack
