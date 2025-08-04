@@ -182,7 +182,3 @@ El sistema incluye 11 usuarios de ejemplo con información realista:
 ## Autor
 
 **Uriel Medina** - Desarrollador Full Stack
-
----
-
-*Sistema desarrollado con fines educativos y de demostración. Ideal para aprender conceptos de desarrollo web, CRUD operations y diseño de interfaces modernas.*
